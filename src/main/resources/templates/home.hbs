@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shortest Path</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRlRQX4pP4Urg_Dz3M6BNuzMOxRd9YrKk"></script>
+    <script>
+        function initMap() {
+            // Get the dwelling coordinates and the closest monument coordinates from the model
+            var dwellingLatitude = {{dwellingLatitude}};
+            var dwellingLongitude = {{dwellingLongitude}};
+            var closestMonumentLatitude = {{closestMonument.latitude}};
+            var closestMonumentLongitude = {{closestMonument.longitude}};
+
+            // Create map centered on the dwelling coordinates
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: dwellingLatitude, lng: dwellingLongitude},
+                zoom: 14
+            });
+
+            // Add markers for the dwelling and the closest monument
+            var dwellingMarker = new google.maps.Marker({
+                position: {lat: dwellingLatitude, lng: dwellingLongitude},
+                map: map,
+                title: 'Dwelling'
+            });
+
+            var closestMonumentMarker = new google.maps.Marker({
+                position: {lat: closestMonumentLatitude, lng: closestMonumentLongitude},
+                map: map,
+                title: 'Closest Monument'
+            });
+
+            // Create a path for the shortest path
+            var shortestPathCoordinates = [
+                {lat: dwellingLatitude, lng: dwellingLongitude},
+                // Add the coordinates of the shortest path here
+                // You can use a loop to iterate over the coordinates and add them to the array
+                // For this example, let's assume we have hardcoded the shortest path coordinates
+                // between the dwelling and the closest monument
+                {lat: closestMonumentLatitude, lng: closestMonumentLongitude}
+            ];
+
+            var shortestPath = new google.maps.Polyline({
+                path: shortestPathCoordinates,
+                geodesic: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+
+            // Add the shortest path to the map
+            shortestPath.setMap(map);
+        }
+    </script>
+</head>
+<body>
+<h1>Shortest Path</h1>
+<form action="/" method="get">
+    <label for="dwellingLatitude">Dwelling Latitude:</label>
+    <input type="text" id="dwellingLatitude" name="dwellingLatitude" required>
+    <br>
+    <label for="dwellingLongitude">Dwelling Longitude:</label>
+    <input type="text" id="dwellingLongitude" name="dwellingLongitude" required>
+    <br>
+    <button type="submit">Find Shortest Path</button>
+</form>
+<div id="map"></div>
+<script>
+    // Call the initMap function when the page loads
+    window.onload = function () {
+        initMap();
+    };
+</script>
+</body>
+</html>
